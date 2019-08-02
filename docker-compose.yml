@@ -1,0 +1,40 @@
+version: "3.6"
+services:
+  pgdb:
+    build: ./postgres
+    volumes:
+      - postgres_vol:/var/lib/postgresql/data/
+    env_file:
+      - .env.txt
+  engine:
+    build: ./engine
+    restart: always
+    volumes:
+      - ./engine/app:/var/lib/engine/app
+    ports:
+      - "4040:4040"
+    env_file:
+      - .env.txt
+    depends_on:
+      - pgdb
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - "3131:3131"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+volumes:
+  postgres_vol:

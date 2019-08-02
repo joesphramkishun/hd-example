@@ -1,0 +1,12 @@
+# DO NOT REMOVE THIS LINE AND THE LINES BELOW SSL_REDIRECT:raphaelrestrepo.com
+
+Options -MultiViews
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^raphaelrestrepo.com$
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
+
+# DO NOT REMOVE THIS LINE AND THE LINES ABOVE SSL_REDIRECT:raphaelrestrepo.com
